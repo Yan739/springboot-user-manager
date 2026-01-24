@@ -1,20 +1,27 @@
 package com.yann.springboot_user_manager.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString(exclude = "password")
 @Entity
+@Table(name = "`users`")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    private long id;
 
+    @Column(nullable = false)
     String name;
+
+    @Column(nullable = false, unique = true)
     String email;
+
+    @Column(nullable = false)
     String password;
 }
