@@ -1,4 +1,8 @@
 package com.yann.springboot_user_manager.repository;
 
-public class UserRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.yann.springboot_user_manager.entity.User;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
 }

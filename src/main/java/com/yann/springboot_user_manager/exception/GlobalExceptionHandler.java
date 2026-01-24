@@ -1,13 +1,14 @@
 package com.yann.springboot_user_manager.exception;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @NotBlank
-    String nom;
-
-    @Email
-    String email;
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handle(RuntimeException e){
+        return ResponseEntity.status(404).body(e.getMessage());
+    }
 }
