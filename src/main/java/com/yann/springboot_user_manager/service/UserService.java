@@ -65,20 +65,4 @@ public class UserService {
         return UserMapper.toDTO(user);
     }
 
-    public boolean checkPassword(String rawPassword, String hashedPassword) {
-        return passwordEncoder.matches(rawPassword, hashedPassword);
-    }
-
-
-    public UserDTO login(String email, String password) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Identifiants invalides"));
-
-        if (!checkPassword(password, user.getPassword())) {
-            throw new RuntimeException("Identifiants invalides");
-        }
-
-        return UserMapper.toDTO(user);
-    }
-
 }
