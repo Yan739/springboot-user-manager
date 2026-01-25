@@ -1,10 +1,8 @@
 package com.yann.springboot_user_manager.exception;
 
-import lombok.Getter;
-
 import java.time.LocalDateTime;
 
-@Getter
+
 public class ApiError {
 
     private int status;

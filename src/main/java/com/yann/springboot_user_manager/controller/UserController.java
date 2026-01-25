@@ -2,6 +2,7 @@ package com.yann.springboot_user_manager.controller;
 
 import com.yann.springboot_user_manager.dto.UserCreateDTO;
 import com.yann.springboot_user_manager.dto.UserDTO;
+import com.yann.springboot_user_manager.dto.UserUpdateDTO;
 import com.yann.springboot_user_manager.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -35,4 +36,19 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAll() {
         return ResponseEntity.ok(service.getAll());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> update(
+            @PathVariable Long id,
+            @Valid @RequestBody UserUpdateDTO dto) {
+
+        return ResponseEntity.ok(service.update(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
