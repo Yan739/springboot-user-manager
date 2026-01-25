@@ -2,11 +2,11 @@ package com.yann.springboot_user_manager.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserCreateDTO {
@@ -19,7 +19,7 @@ public class UserCreateDTO {
     private String email;
 
     @NotBlank(message = "Le mot de passe est obligatoire")
+    @Size(min = 8, message = "Le mot de passe doit faire au moins 8 caractères")
     private String password;
 
-    // DTO utilisé pour créer un utilisateur via l'API
 }

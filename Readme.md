@@ -5,7 +5,7 @@
 ## Description
 
 This project is a **complete REST API** for user management built with **Spring Boot**.  
-It demonstrates a clean layered architecture (**Controller** → **Service** → **Repository** → **Entity/DTO**), data validation, exception handling, and REST best practices.
+It demonstrates a clean layered architecture (**Controller** → **Service** → **Repository** → **Entity/DTO**), data validation, exception handling, secure password management, and REST best practices.
 
 The goal is to showcase mastery of **Spring Boot** for creating professional, testable, and maintainable APIs.
 
@@ -14,15 +14,16 @@ The goal is to showcase mastery of **Spring Boot** for creating professional, te
 ## Features
 
 - **Complete CRUD operations for users**
-    - **Create** (`POST /users`)
-    - **Read** (`GET /users` and `GET /users/{id}`)
-    - **Update** (`PUT /users/{id}`)
-    - **Delete** (`DELETE /users/{id}`)
-- **Server-side data validation** (`@NotBlank`, `@Email`)
+  - **Create** (`POST /users`)
+  - **Read** (`GET /users` and `GET /users/{id}`)
+  - **Update** (`PUT /users/{id}`)
+  - **Delete** (`DELETE /users/{id}`)
+- **Server-side data validation** (`@NotBlank`, `@Email`, `@Size`)
 - **Centralized error handling** with `@RestControllerAdvice`
 - **DTOs for data exposure** (no direct entity exposure)
 - **Static mapper** to transform **Entity** ↔ **DTO**
 - **Correct HTTP status codes** for each operation
+- **Secure password storage using BCrypt** (hashed before saving to database)
 - **Compatible with in-memory H2 database** for quick testing and development
 
 ---
@@ -34,14 +35,17 @@ The goal is to showcase mastery of **Spring Boot** for creating professional, te
 - **Spring Data JPA**
 - **H2 Database** (in-memory)
 - **Lombok**
-- **Jakarta Validation** (`@NotBlank`, `@Email`)
+- **Jakarta Validation** (`@NotBlank`, `@Email`, `@Size`)
+- **Spring Security (for BCrypt password hashing)**
 
 ---
 
 ## Project Structure
+
 ```
 com.example.springboot_user_manager
 │
+├── config        → Beans and Spring configuration (PasswordEncoder, etc.)
 ├── controller    → REST endpoints
 ├── service       → business logic
 ├── repository    → JPA interface for persistence
@@ -55,8 +59,6 @@ com.example.springboot_user_manager
 
 ## Usage Examples (Postman / HTTP)
 
----
-
 ### Create a user
 ```http
 POST /users
@@ -67,6 +69,7 @@ Content-Type: application/json
   "email": "alice@mail.com",
   "password": "SecurePass123!"
 }
+
 ```
 
 **Response:**
