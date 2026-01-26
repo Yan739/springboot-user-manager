@@ -1,6 +1,8 @@
 package com.yann.springboot_user_manager.controller;
 
+import com.yann.springboot_user_manager.dto.LoginDTO;
 import com.yann.springboot_user_manager.dto.RegisterDTO;
+import com.yann.springboot_user_manager.dto.UserDTO;
 import com.yann.springboot_user_manager.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -24,5 +26,11 @@ public class AuthController {
     public ResponseEntity<Void> register(@Valid @RequestBody RegisterDTO dto) {
         authService.register(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> login(@Valid @RequestBody LoginDTO dto) {
+        UserDTO user = authService.login(dto);
+        return ResponseEntity.ok(user);
     }
 }

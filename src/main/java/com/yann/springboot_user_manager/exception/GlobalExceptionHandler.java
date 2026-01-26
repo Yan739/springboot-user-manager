@@ -43,4 +43,14 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntime(RuntimeException e) {
+        String message = e.getMessage();
+        if (message.equals("Identifiants invalides")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+
 }
