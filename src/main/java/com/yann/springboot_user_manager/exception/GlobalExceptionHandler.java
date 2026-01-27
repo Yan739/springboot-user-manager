@@ -1,5 +1,6 @@
 package com.yann.springboot_user_manager.exception;
 
+import jakarta.annotation.Nonnull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,7 +15,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiError> handleUserNotFound(UserNotFoundException e) {
+    public ResponseEntity<ApiError> handleUserNotFound(@Nonnull UserNotFoundException e) {
         ApiError error = new ApiError(
                 HttpStatus.NOT_FOUND.value(),
                 e.getMessage()
@@ -33,7 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationErrors(
-            MethodArgumentNotValidException ex) {
+            @Nonnull MethodArgumentNotValidException ex) {
 
         Map<String, String> errors = new HashMap<>();
 
@@ -45,7 +46,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntime(RuntimeException e) {
+    public ResponseEntity<String> handleRuntime(@Nonnull RuntimeException e) {
         String message = e.getMessage();
         if (message.equals("Identifiants invalides")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);

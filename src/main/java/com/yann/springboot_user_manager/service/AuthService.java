@@ -14,10 +14,12 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public void register (RegisterDTO dto) {
@@ -33,14 +35,15 @@ public class AuthService {
         userRepository.save(user);
     }
 
-    public UserDTO login (LoginDTO dto) {
+    public String loginAndGetToken(LoginDTO dto) {
+        User user = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("Identifiants invalides"));
 
-        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new RuntimeException("Identifiants invalides"));
-
-        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new RuntimeException("Identifiants invalides");
         }
 
-        return UserMapper.toDTO(user);
+        return jwtService.generateToken(user.getEmail());
     }
+
 }
