@@ -1,6 +1,14 @@
 # Spring Boot User Manager API
 
 ---
+![Java](https://img.shields.io/badge/Java-17+-blue?logo=java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1-green?logo=spring&logoColor=white)
+![H2 Database](https://img.shields.io/badge/H2-Database-blue?logo=h2&logoColor=white)
+![Build](https://img.shields.io/badge/Build-Maven-red?logo=apachemaven&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+![Code Style](https://img.shields.io/badge/Code%20Style-DTO%2FEntity-lightgrey)
+![JWT](https://img.shields.io/badge/JWT-Security-orange)
+
 
 ## Description
 
