@@ -1,16 +1,14 @@
 package com.yann.springboot_user_manager.controller;
 
+import com.yann.springboot_user_manager.dto.AuthResponseDTO;
 import com.yann.springboot_user_manager.dto.LoginDTO;
+import com.yann.springboot_user_manager.dto.RefreshTokenDTO;
 import com.yann.springboot_user_manager.dto.RegisterDTO;
-import com.yann.springboot_user_manager.dto.UserDTO;
 import com.yann.springboot_user_manager.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -29,8 +27,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginDTO dto) {
-        String token = authService.loginAndGetToken(dto);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<AuthResponseDTO> login(
+            @Valid @RequestBody LoginDTO dto) {
+
+        return ResponseEntity.ok(authService.login(dto));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<String> refresh(
+            @Valid @RequestBody RefreshTokenDTO dto) {
+
+        String newAccessToken = authService.refresh(dto);
+        return ResponseEntity.ok(newAccessToken);
     }
 }

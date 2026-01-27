@@ -1,5 +1,6 @@
 package com.yann.springboot_user_manager.service;
 
+import com.yann.springboot_user_manager.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,9 +16,10 @@ public class JwtService {
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION = 1000 * 60 * 60;
 
-    public String generateToken(String email) {
+    public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(user.getEmail())
+                .claim("role", user.getRole().name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
@@ -25,11 +27,19 @@ public class JwtService {
     }
 
     public String extractEmail(String token) {
-        Claims claims = Jwts.parser()
+        return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
-                .getBody();
-        return claims.getSubject();
+                .getBody()
+                .getSubject();
+    }
+
+    public String extractRole(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
     }
 
     public boolean isTokenValid(String token, String email) {
@@ -44,4 +54,6 @@ public class JwtService {
                 .getExpiration()
                 .before(new Date());
     }
+
+
 }

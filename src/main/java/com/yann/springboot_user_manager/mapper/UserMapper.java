@@ -3,6 +3,7 @@ package com.yann.springboot_user_manager.mapper;
 import com.yann.springboot_user_manager.dto.RegisterDTO;
 import com.yann.springboot_user_manager.dto.UserCreateDTO;
 import com.yann.springboot_user_manager.dto.UserDTO;
+import com.yann.springboot_user_manager.entity.Role;
 import com.yann.springboot_user_manager.entity.User;
 
 public final class UserMapper {
@@ -28,6 +29,7 @@ public final class UserMapper {
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
+        user.setRole(Role.valueOf(dto.getRole()));
 
         return user;
     }
