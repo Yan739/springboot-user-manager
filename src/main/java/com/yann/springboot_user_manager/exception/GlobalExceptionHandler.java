@@ -54,4 +54,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
+    @ExceptionHandler(InvalidJwtException.class)
+    public ResponseEntity<String> handleInvalidJwt(InvalidJwtException e) {
+        return ResponseEntity.status(401).body(e.getMessage());
+    }
 }

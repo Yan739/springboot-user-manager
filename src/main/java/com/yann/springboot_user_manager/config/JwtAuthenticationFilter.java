@@ -1,5 +1,6 @@
 package com.yann.springboot_user_manager.config;
 
+import com.yann.springboot_user_manager.service.BlacklistService;
 import com.yann.springboot_user_manager.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,10 +18,12 @@ import java.util.List;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private  final JwtService jwtService;
+    private final JwtService jwtService;
+    private final BlacklistService blacklistService;
 
-    public JwtAuthenticationFilter(JwtService jwtService) {
+    public JwtAuthenticationFilter(JwtService jwtService, BlacklistService blacklistService) {
         this.jwtService = jwtService;
+        this.blacklistService = blacklistService;
     }
 
     @Override
@@ -34,20 +37,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
 
-            String email = jwtService.extractEmail(token);
-            String role = jwtService.extractRole(token);
+            try {
 
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+                String email = jwtService.extractEmail(token);
 
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
+                if (jwtService.isTokenValid(token, email) && !blacklistService.isBlacklisted(token)) {
+                    String role = jwtService.extractRole(token);
 
+                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+                    UsernamePasswordAuthenticationToken auth =
+                            new UsernamePasswordAuthenticationToken(email, null, List.of(authority));
 
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
         }
 
         filterChain.doFilter(request, response);
     }
-
-
 }
