@@ -21,5 +21,5 @@ public class RegisterDTO {
     private String password;
 
     @NotNull
-    private String role; // "ADMIN" ou "USER"
+    private String role;
 }
