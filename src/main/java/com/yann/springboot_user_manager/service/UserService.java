@@ -7,6 +7,7 @@ import com.yann.springboot_user_manager.entity.User;
 import com.yann.springboot_user_manager.exception.UserNotFoundException;
 import com.yann.springboot_user_manager.mapper.UserMapper;
 import com.yann.springboot_user_manager.repository.UserRepository;
+import jakarta.annotation.Nonnull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class UserService {
         return UserMapper.toDTO(savedUser);
     }
 
-    public UserDTO update(Long id, UserUpdateDTO dto) {
+    public UserDTO update(Long id, @Nonnull UserUpdateDTO dto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 
