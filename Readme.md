@@ -261,4 +261,4 @@ API available at: `http://localhost:8080`
 
 ---
 
-*Projet personnel — public — pas de licence restrictive.*
+*Personal project — public — no restrictive license.*
